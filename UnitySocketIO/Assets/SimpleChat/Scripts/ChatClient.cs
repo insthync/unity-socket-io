@@ -32,7 +32,7 @@ namespace SimpleChat
 
         private void OnChatMessage(SocketIOResponse response)
         {
-            msg += $"Recieve: { response.GetValue(0)}\n";
+            msg += $"Recieve: { response.GetValue<string>()}\n";
         }
 
         public void EnterChat()
