@@ -16,10 +16,6 @@ namespace SimpleChat
         async void Start()
         {
             client = new SocketIO("http://localhost:3000/");
-            client.On("hi", response =>
-            {
-                string text = response.GetValue<string>();
-            });
             client.On("chat message", OnChatMessage);
             await client.ConnectAsync();
         }
@@ -29,15 +25,20 @@ namespace SimpleChat
             await client.DisconnectAsync();
         }
 
+        private void Update()
+        {
+            text.text = msg;
+        }
+
         private void OnChatMessage(SocketIOResponse response)
         {
-            msg += $"Recieve: {response.GetValue<string>()}\n";
-            text.text = msg;
+            msg += $"Recieve: { response.GetValue(0)}\n";
         }
 
         public void EnterChat()
         {
             client.EmitAsync("chat message", input.text);
+            input.text = string.Empty;
         }
 
         public void Clear()
